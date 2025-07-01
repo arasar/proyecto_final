@@ -2,16 +2,26 @@
 # Guardar este archivo como scripts/generate_sql.py
 
 import subprocess
-import json
 
 def generar_sql_con_ollama(prompt: str) -> str:
-    """
-    Ejecuta el modelo llama3 localmente con Ollama para generar SQL a partir de un prompt.
-    """
-    comando = [
-        "ollama", "run", "llama3",
-        "--prompt", prompt
-    ]
+    try:
+        proceso = subprocess.Popen(
+            ["ollama", "run", "llama3"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            encoding="utf-8"
+        )
 
-    resultado = subprocess.run(comando, capture_output=True, text=True)
-    return resultado.stdout.strip()
+        out, err = proceso.communicate(input=prompt, timeout=90)
+
+        if err:
+            return f"[ERROR STDERR: {err.strip()}]"
+
+        return out.strip()
+
+    except subprocess.TimeoutExpired:
+        return "[ERROR: El modelo tardó demasiado en responder (timeout)]"
+    except Exception as e:
+        return f"[ERROR inesperado: {str(e)}]"

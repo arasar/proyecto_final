@@ -85,5 +85,5 @@ print("SQL real:", df.iloc[0]['sql'])
 print("SQL generado:", sql_generado)
 
 # Guardar en outputs
-with open("outputs/test_result.txt", "w") as f:
+with open("outputs/test_result.txt", "w", encoding="utf-8") as f:
     f.write(f"Prompt usado:\n{prompt}\n\nSQL generado:\n{sql_generado}\n")
