@@ -17,17 +17,12 @@ for i, row in df.iterrows():
     dominio = row.get('domain', '')
     complejidad = row.get('sql_complexity', '')
 
-    prompt = f"""
-    Translate the following question to SQL based on the context provided.
+    prompt = f"""Convert this question to SQL:
 
-    Context:
-    {contexto}
+    Schema: {contexto}
+    Question: {pregunta}
 
-    Question:
-    {pregunta}
-
-    SQL:
-    """
+    Return only the SQL query:"""
     try:
         sql_generado = generar_sql_con_ollama(prompt)
     except Exception as e:

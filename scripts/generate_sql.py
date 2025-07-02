@@ -8,12 +8,16 @@ def generar_sql_con_ollama(prompt: str, model: str = "llama3") -> str:
     """
     Genera SQL usando la API REST de Ollama
     """
+    prompt_mejorado = f"""{prompt}
+
+    IMPORTANT: Return ONLY the SQL query without any explanation, comments, or formatting. Do not include ```sql``` blocks."""
+
     try:
         url = "http://localhost:11434/api/generate"
         
         payload = {
             "model": model,
-            "prompt": prompt,
+            "prompt": prompt_mejorado,
             "stream": False,
             "options": {
                 "temperature": 0.1,  # Más determinístico para SQL
@@ -23,7 +27,7 @@ def generar_sql_con_ollama(prompt: str, model: str = "llama3") -> str:
         }
         
         print(f"Enviando solicitud a Ollama...")
-        response = requests.post(url, json=payload, timeout=120)
+        response = requests.post(url, json=payload, timeout=200)
         
         if response.status_code == 200:
             result = response.json()
