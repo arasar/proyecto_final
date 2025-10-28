@@ -1,0 +1,23 @@
+CREATE TABLE empleados (
+    id INTEGER PRIMARY KEY,
+    nombre TEXT,
+    departamento TEXT,
+    salario INTEGER
+);
+
+CREATE TABLE departamentos (
+    id INTEGER PRIMARY KEY,
+    nombre TEXT,
+    ubicacion TEXT
+);
+
+INSERT INTO empleados (nombre, departamento, salario) VALUES
+('Ana Pérez', 'Ventas', 120000),
+('Juan López', 'Ventas', 115000),
+('Lucía Fernández', 'IT', 150000),
+('Carlos Gómez', 'RRHH', 100000);
+
+INSERT INTO departamentos (nombre, ubicacion) VALUES
+('Ventas', 'Buenos Aires'),
+('IT', 'Córdoba'),
+('RRHH', 'Mendoza');
