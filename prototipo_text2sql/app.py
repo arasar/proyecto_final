@@ -2,7 +2,7 @@ import streamlit as st
 from utils.db_utils import obtener_contexto_tablas, ejecutar_consulta
 from modelo.modelo_text2sql import generar_sql_desde_texto
 
-DB_PATH = "empresa.db"
+DB_PATH = "prototipo_text2sql\data\chinook.db"
 
 st.set_page_config(page_title="Prototipo Text-to-SQL", layout="centered")
 
