@@ -1,8 +1,8 @@
 import streamlit as st
-from utils.db_utils import obtener_contexto_tablas, ejecutar_consulta
+from utils.db_utils import obtener_contexto_tablas, ejecutar_consulta, formatear_prompt_llama
 from modelo.modelo_text2sql import generar_sql_desde_texto
 
-DB_PATH = "prototipo_text2sql\data\chinook.db"
+DB_PATH = "prototipo_text2sql/data/chinook.db"
 
 st.set_page_config(page_title="Prototipo Text-to-SQL", layout="wide")
 
@@ -20,7 +20,7 @@ with col1:
     # Mostrar prompt generado (si ya hay texto)
     if consulta_usuario.strip() and not btn_traducir:
         contexto_preview = obtener_contexto_tablas(DB_PATH)
-        prompt_preview = f"Contexto:\n{contexto_preview}\n\nConsulta:\n{consulta_usuario}"
+        prompt_preview = formatear_prompt_llama(contexto_preview, consulta_usuario)
         st.subheader("🧾 Prompt (previsualización)")
         st.code(prompt_preview, language="markdown")
 
@@ -34,7 +34,7 @@ with col2:
 if btn_traducir and consulta_usuario.strip():
     with st.spinner("Generando consulta SQL..."):
         contexto = obtener_contexto_tablas(DB_PATH)
-        prompt = f"Contexto:\n{contexto}\n\nConsulta:\n{consulta_usuario}"
+        prompt = formatear_prompt_llama(contexto, consulta_usuario)
 
         # Mostrar prompt generado en la columna izquierda
         with col1:
@@ -55,7 +55,7 @@ if btn_traducir and consulta_usuario.strip():
                 results_container.subheader("📊 Resultados de la consulta")
                 try:
                     resultados = ejecutar_consulta(DB_PATH, sql_generada)
-                    results_container.dataframe(resultados, use_container_width=True)
+                    results_container.dataframe(resultados, width="stretch")
                 except Exception as e:
                     results_container.error(f"Error al ejecutar la consulta: {e}")
             else:
